@@ -10,4 +10,6 @@ sealed class SignUpState{
     class Error(val error: String?) : SignUpState()
 
     object Loading: SignUpState()
+
+    object Initial: SignUpState()
 }
