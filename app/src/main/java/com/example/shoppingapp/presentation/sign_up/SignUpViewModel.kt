@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.domain.entity.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
 ):ViewModel() {
 
     private var _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
@@ -33,7 +35,7 @@ class SignUpViewModel @Inject constructor(
             auth.createUserWithEmailAndPassword(user.mail, user.password)
                 .addOnSuccessListener {
                     it.user?.let {
-                        _signUpState.value = SignUpState.Success(it)
+                        saveUserInfo(it.uid, user)
                     }
                 }
                 .addOnFailureListener{
@@ -55,6 +57,17 @@ class SignUpViewModel @Inject constructor(
 
     }
 
+    private fun saveUserInfo(userId: String, user: User){
+        db.collection(DB_USER_COLLECTION)
+            .document(userId)
+            .set(user)
+            .addOnSuccessListener {
+                _signUpState.value = SignUpState.Success(user)
+            }
+            .addOnFailureListener{
+                _signUpState.value = SignUpState.Error(it.message)
+            }
+    }
 
     private fun validateName(name: String): SignUpValidateState{
         if(name.isEmpty()) return SignUpValidateState.Error("Fill this field")
@@ -86,5 +99,9 @@ class SignUpViewModel @Inject constructor(
 
         return emailV is SignUpValidateState.Success && passwordV is SignUpValidateState.Success &&
                 nameV is SignUpValidateState.Success && surnameV is SignUpValidateState.Success
+    }
+
+    companion object {
+        private const val DB_USER_COLLECTION: String = "users"
     }
 }
