@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.sign_up
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,8 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.shoppingapp.AppActivity
 import com.example.shoppingapp.databinding.FragmentSignUpBinding
 import com.example.shoppingapp.domain.entity.User
+import com.example.shoppingapp.presentation.sign_in.SignInFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -39,9 +43,9 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnSignUp.setOnClickListener {
-            val name = binding.edName.text.toString()
-            val surname = binding.edSurname.text.toString()
-            val email = binding.edEmail.text.toString()
+            val name = binding.edName.text.toString().trim()
+            val surname = binding.edSurname.text.toString().trim()
+            val email = binding.edEmail.text.toString().trim()
             val password = binding.edPassword.text.toString()
 
             val user = User(
@@ -64,8 +68,7 @@ class SignUpFragment : Fragment() {
                             binding.prbSignUp.visibility = View.VISIBLE
                         }
                         is SignUpState.Success -> {
-                            binding.btnSignUp.visibility = View.VISIBLE
-                            binding.prbSignUp.visibility = View.GONE
+                            launchSignInFragment()
                         }
                         is SignUpState.Error -> {
                             Log.d("TEST", "onViewCreated: ${it.error}")
@@ -110,6 +113,10 @@ class SignUpFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun launchSignInFragment(){
+        findNavController().navigate(SignUpFragmentDirections.actionSignUpFragmentToSignInFragment())
     }
 
     override fun onDestroyView() {

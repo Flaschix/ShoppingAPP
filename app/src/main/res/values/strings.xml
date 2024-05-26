@@ -10,4 +10,10 @@
     <string name="registration_enter">Войти</string>
     <string name="password">Пароль</string>
     <string name="email">Почта</string>
+    <string name="registration">Registration</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="reset_description">We will send you the password reset link to your email</string>
 </resources>

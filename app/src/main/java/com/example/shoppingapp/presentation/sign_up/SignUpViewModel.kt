@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class SignUpViewModel @Inject constructor(
 ):ViewModel() {
 
     private var _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
-    val signUpState: Flow<SignUpState> = _signUpState
+    val signUpState: Flow<SignUpState> = _signUpState.asStateFlow()
 
     private val _validation = Channel<SignUpFieldsState>()
     val validateState = _validation.receiveAsFlow()

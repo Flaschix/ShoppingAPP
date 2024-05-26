@@ -85,7 +85,7 @@
             app:cornerRadius="8dp"
             android:insetBottom="0dp"
             android:backgroundTint="@color/light_pink"
-            android:text="@string/registration_enter"
+            android:text="@string/registration"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
