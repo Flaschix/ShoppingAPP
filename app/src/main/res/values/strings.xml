@@ -2,8 +2,8 @@
     <string name="app_name">Shopping APP</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="signin">SignIn</string>
-    <string name="signup">SignUp</string>
+    <string name="signin">Sign In</string>
+    <string name="signup">Sign Up</string>
     <string name="registration_name">Имя</string>
     <string name="registration_surname">Фамилия</string>
     <string name="registration_phone">Номер телефона</string>
