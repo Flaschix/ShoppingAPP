@@ -2,10 +2,21 @@ package com.example.shoppingapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.shoppingapp.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
+
+    private val binding by lazy {
+        ActivityAppBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_app)
+        setContentView(binding.root)
+
+        val navController = findNavController(R.id.appHostFragment)
+        binding.bottomNavigation.setupWithNavController(navController)
     }
 }
