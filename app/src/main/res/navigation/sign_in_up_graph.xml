@@ -11,10 +11,14 @@
         tools:layout="@layout/fragment_start_screen" >
         <action
             android:id="@+id/action_startScreenFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/from_right"
+            app:popEnterAnim="@anim/from_left" />
         <action
             android:id="@+id/action_startScreenFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/from_right"
+            app:popEnterAnim="@anim/from_left" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
