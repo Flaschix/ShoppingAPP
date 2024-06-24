@@ -1,7 +1,6 @@
 package com.example.onlinemarket.domain.repository
 
-import com.example.onlinemarket.domain.entity.Product.Product
-import com.example.onlinemarket.domain.entity.User
+import com.example.shoppingapp.domain.entity.User
 import kotlinx.coroutines.flow.StateFlow
 
 interface UserRepository {

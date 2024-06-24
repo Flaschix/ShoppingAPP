@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.home.special_product
+package com.example.shoppingapp.presentation.home
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.shoppingapp.domain.entity.Product.Product

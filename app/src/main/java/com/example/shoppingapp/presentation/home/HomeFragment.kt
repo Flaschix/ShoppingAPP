@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentHomeBinding
 import com.example.shoppingapp.presentation.home.category_type.BaseCategoryFragment
-import com.example.shoppingapp.presentation.home.category_type.MainCategoryFragment
+import com.example.shoppingapp.presentation.home.category_type.main.MainCategoryFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment: Fragment(R.layout.fragment_home) {
@@ -37,6 +37,8 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
             BaseCategoryFragment.Bad(),
             BaseCategoryFragment.Illumination()
         )
+
+        binding.viewpagerHome.isUserInputEnabled = false
 
         val viewPagerAdapter = HomeAdapter(categoriesFragment, childFragmentManager, lifecycle)
 

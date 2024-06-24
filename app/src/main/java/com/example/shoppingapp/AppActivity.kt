@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.shoppingapp.databinding.ActivityAppBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
 
     private val binding by lazy {
