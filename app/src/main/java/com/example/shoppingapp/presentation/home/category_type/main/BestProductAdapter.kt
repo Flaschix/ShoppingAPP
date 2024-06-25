@@ -1,5 +1,6 @@
 package com.example.shoppingapp.presentation.home.category_type.main
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -22,6 +23,7 @@ class BestProductAdapter: ListAdapter<Product, BestProductAdapter.BestProductVie
                 Glide.with(itemView).load(product.images[0]).into(imgProduct)
                 tvNewPrice.text = "$ ${product.price.priceWithDiscount}"
                 tvPrice.text = "$ ${product.price.price}"
+                tvPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 tvName.text = product.title
             }
         }

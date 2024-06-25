@@ -20,7 +20,7 @@ class SpecialProductAdapter: ListAdapter<Product, SpecialProductAdapter.SpecialP
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imageSpecialRvItem)
                 tvSpecialProductName.text = product.title
-                tvSpecialPrdouctPrice.text = product.price.price
+                tvSpecialPrdouctPrice.text = "$ ${product.price.price}"
             }
         }
     }

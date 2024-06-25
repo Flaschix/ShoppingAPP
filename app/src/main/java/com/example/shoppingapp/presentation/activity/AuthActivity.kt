@@ -1,7 +1,8 @@
-package com.example.shoppingapp
+package com.example.shoppingapp.presentation.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.shoppingapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
 

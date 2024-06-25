@@ -21,7 +21,7 @@ class SignUpViewModel @Inject constructor(
     private val db: FirebaseFirestore
 ):ViewModel() {
 
-    private var _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
+    private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
     val signUpState: Flow<SignUpState> = _signUpState.asStateFlow()
 
     private val _validation = Channel<SignUpFieldsState>()

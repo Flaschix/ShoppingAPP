@@ -2,7 +2,6 @@ package com.example.shoppingapp.presentation.sign_in
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.shoppingapp.AppActivity
+import com.example.shoppingapp.presentation.activity.AppActivity
 import com.example.shoppingapp.databinding.FragmentSignInBinding
 import com.example.shoppingapp.presentation.sign_in.dialog.ResetPasswordState
 import com.example.shoppingapp.presentation.sign_in.dialog.setupBottomSheetDialog
-import com.example.shoppingapp.presentation.sign_up.SignUpState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 

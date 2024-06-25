@@ -1,6 +1,5 @@
 package com.example.shoppingapp.presentation.sign_up
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,15 +11,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.shoppingapp.AppActivity
 import com.example.shoppingapp.databinding.FragmentSignUpBinding
 import com.example.shoppingapp.domain.entity.User
-import com.example.shoppingapp.presentation.sign_in.SignInFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {

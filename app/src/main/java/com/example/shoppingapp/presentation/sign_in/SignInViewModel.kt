@@ -21,7 +21,7 @@ class SignInViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ): ViewModel() {
 
-    private var _signInState = MutableStateFlow<SignInState>(SignInState.Initial)
+    private val _signInState = MutableStateFlow<SignInState>(SignInState.Initial)
     val signInState = _signInState.asStateFlow()
 
     private val _validation = Channel<SignInFieldsState>()
