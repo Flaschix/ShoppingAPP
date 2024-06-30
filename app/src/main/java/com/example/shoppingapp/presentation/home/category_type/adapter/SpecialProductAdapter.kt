@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.home.category_type.main
+package com.example.shoppingapp.presentation.home.category_type.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

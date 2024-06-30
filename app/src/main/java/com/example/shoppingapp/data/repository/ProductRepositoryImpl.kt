@@ -39,4 +39,24 @@ class ProductRepositoryImpl @Inject constructor(
     }
 
     override fun getListProduct(): StateFlow<List<Product>> = recommendations
+
+
+//    private val recommendationsByCategory: StateFlow<List<Product>> = flow<List<Product>> {
+//        val response = apiService.loadListProduct()
+//        val products = mapper.mapResponseToProductByCategory(response, ca)
+//        emit(products.toList())
+//    }.stateIn(
+//        scope = coroutineScope,
+//        started = SharingStarted.Lazily,
+//        initialValue = listOf()
+//    )
+    override fun getListProductByCategory(category: String): StateFlow<List<Product>> = flow<List<Product>> {
+        val response = apiService.loadListProduct()
+        val products = mapper.mapResponseToProductByCategory(response, category)
+        emit(products.toList())
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = listOf()
+    )
 }

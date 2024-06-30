@@ -8,6 +8,7 @@ data class Product(
     val id: String,
     val title: String,
     val subtitle: String,
+    val category: String,
     val images: List<String>,
     val price: ProductPrice,
     val feedback: ProductFeedback,

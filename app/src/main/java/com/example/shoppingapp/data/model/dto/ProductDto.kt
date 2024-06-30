@@ -6,6 +6,7 @@ data class ProductDto(
     @SerializedName("id") val id: String,
     @SerializedName("title") val title: String,
     @SerializedName("subtitle") val subtitle: String,
+    @SerializedName("category") val category: String,
     @SerializedName("images") val images: List<String>, ///добавил
     @SerializedName("price") val price: PriceDto,
     @SerializedName("feedback") val feedback: FeedbackDto,

@@ -8,4 +8,6 @@ interface ProductRepository {
     fun getProduct(id: String): StateFlow<Product?>
 
     fun getListProduct(): StateFlow<List<Product>>
+
+    fun getListProductByCategory(category: String): StateFlow<List<Product>>
 }

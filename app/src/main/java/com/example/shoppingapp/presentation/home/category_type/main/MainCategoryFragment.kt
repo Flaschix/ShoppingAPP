@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentMainCategoryBinding
+import com.example.shoppingapp.presentation.home.category_type.RVState
+import com.example.shoppingapp.presentation.home.category_type.adapter.BestCaseAdapter
+import com.example.shoppingapp.presentation.home.category_type.adapter.BestProductAdapter
+import com.example.shoppingapp.presentation.home.category_type.adapter.SpecialProductAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -58,12 +62,12 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.screenState.collect{
                     when(it){
-                        is MainCategoryRVState.Error -> {}
-                        MainCategoryRVState.Initial -> {}
-                        MainCategoryRVState.Loading -> {
+                        is RVState.Error -> {}
+                        RVState.Initial -> {}
+                        RVState.Loading -> {
                             showProgress()
                         }
-                        is MainCategoryRVState.Success -> {
+                        is RVState.Success -> {
                             specialProductAdapter.submitList(it.data)
                             bestCaseAdapter.submitList(it.data)
                             bestProductAdapter.submitList(it.data)
@@ -100,10 +104,12 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
 
     private fun showProgress() {
         binding.mainCategoryProgressbar.visibility = View.VISIBLE
+        binding.bestProductsProgressbar.visibility = View.VISIBLE
     }
 
     private fun hideProgress() {
         binding.mainCategoryProgressbar.visibility = View.GONE
+        binding.bestProductsProgressbar.visibility = View.GONE
     }
 
     override fun onDestroyView() {

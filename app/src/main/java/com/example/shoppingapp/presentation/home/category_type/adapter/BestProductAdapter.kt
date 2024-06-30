@@ -1,4 +1,4 @@
-package com.example.shoppingapp.presentation.home.category_type.main
+package com.example.shoppingapp.presentation.home.category_type.adapter
 
 import android.graphics.Paint
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.shoppingapp.databinding.RecycleViewBestCaseBinding
 import com.example.shoppingapp.databinding.RecycleViewBestProductBinding
 import com.example.shoppingapp.domain.entity.Product.Product
 import com.example.shoppingapp.presentation.home.ProductDiffCallback

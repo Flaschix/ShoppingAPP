@@ -2,6 +2,7 @@ package com.example.shoppingapp.presentation.home.category_type.main
 
 import androidx.lifecycle.ViewModel
 import com.example.onlinemarket.domain.usecase.GetProductListUseCase
+import com.example.shoppingapp.presentation.home.category_type.RVState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -17,6 +18,6 @@ class MainCategoryViewModel @Inject constructor(
 
     val screenState = productList
         .filter { it.isNotEmpty() }
-        .map { MainCategoryRVState.Success(it) as MainCategoryRVState }
-        .onStart { emit(MainCategoryRVState.Loading) }
+        .map { RVState.Success(it) as RVState }
+        .onStart { emit(RVState.Loading) }
 }
