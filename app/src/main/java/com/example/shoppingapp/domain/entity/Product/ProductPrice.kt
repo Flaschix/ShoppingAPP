@@ -9,4 +9,6 @@ data class ProductPrice(
     val discount: Int,
     val priceWithDiscount: String,
     val unit: String,
-) : Parcelable
+) : Parcelable{
+    constructor(): this("", 0, "","")
+}

@@ -30,11 +30,6 @@ class ShopItemViewModel @Inject constructor(
 
     private val basketCollection = firestore.collection(Constants.DB_USER).document(auth.uid!!).collection(Constants.DB_BASKET)
 
-    fun add(product: Product) {
-        viewModelScope.launch {
-            addProductToBasketUseCase(product)
-        }
-    }
     fun addProductToBasket(product: Product){
         viewModelScope.launch { _addToBasketState.emit(AddProductState.Loading) }
 

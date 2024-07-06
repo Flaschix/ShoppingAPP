@@ -7,4 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class ProductFeedback(
     val count: Int,
     val rating: Float
-) : Parcelable
+) : Parcelable{
+    constructor(): this(0,0f)
+}

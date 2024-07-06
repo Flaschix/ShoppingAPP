@@ -7,4 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class ProductInfo(
     val title: String,
     val value: String
-) : Parcelable
+) : Parcelable{
+    constructor(): this("","")
+}

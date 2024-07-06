@@ -17,4 +17,6 @@ data class Product(
     val description: String,
     val info: List<ProductInfo>,
     val ingredients: String,
-) : Parcelable
+) : Parcelable{
+    constructor(): this("", "","","", emptyList(),ProductPrice(), ProductFeedback(), emptyList(), 0, "", emptyList(), "")
+}
