@@ -10,4 +10,6 @@ interface ProductRepository {
     fun getListProduct(): StateFlow<List<Product>>
 
     fun getListProductByCategory(category: String): StateFlow<List<Product>>
+
+    fun addProductToBasket(product: Product): StateFlow<Boolean>
 }

@@ -9,14 +9,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentMainCategoryBinding
+import com.example.shoppingapp.presentation.home.HomeFragmentDirections
 import com.example.shoppingapp.presentation.home.category_type.RVState
 import com.example.shoppingapp.presentation.home.category_type.adapter.BestCaseAdapter
 import com.example.shoppingapp.presentation.home.category_type.adapter.BestProductAdapter
 import com.example.shoppingapp.presentation.home.category_type.adapter.SpecialProductAdapter
+import com.example.shoppingapp.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -86,6 +89,18 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = specialProductAdapter
         }
+
+        specialProductAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
+
+        bestCaseAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
+
+        bestProductAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
     }
 
     private fun setUpBCRV(){
@@ -110,6 +125,11 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
     private fun hideProgress() {
         binding.mainCategoryProgressbar.visibility = View.GONE
         binding.bestProductsProgressbar.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showBottomNavigationView()
     }
 
     override fun onDestroyView() {

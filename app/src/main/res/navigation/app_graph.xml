@@ -9,12 +9,20 @@
         android:id="@+id/homeFragment"
         android:name="com.example.shoppingapp.presentation.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_shopItemFragment"
+            app:destination="@id/shopItemFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.shoppingapp.presentation.search.SearchFragment"
         android:label="SearchFragment"
-        tools:layout="@layout/fragment_search"/>
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_shopItemFragment"
+            app:destination="@id/shopItemFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.shoppingapp.presentation.profile.ProfileFragment"
@@ -24,10 +32,18 @@
         android:id="@+id/shopItemFragment"
         android:name="com.example.shoppingapp.presentation.shop_item.ShopItemFragment"
         android:label="ShopItemFragment"
-        tools:layout="@layout/fragment_shop_item"/>
+        tools:layout="@layout/fragment_shop_item">
+        <argument
+            android:name="product"
+            app:argType="com.example.shoppingapp.domain.entity.Product.Product" />
+    </fragment>
     <fragment
         android:id="@+id/basketFragment"
         android:name="com.example.shoppingapp.presentation.basket.BasketFragment"
         android:label="BasketFragment"
-        tools:layout="@layout/fragment_basket"/>
+        tools:layout="@layout/fragment_basket">
+        <action
+            android:id="@+id/action_basketFragment_to_shopItemFragment"
+            app:destination="@id/shopItemFragment" />
+    </fragment>
 </navigation>

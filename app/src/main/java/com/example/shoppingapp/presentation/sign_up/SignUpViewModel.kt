@@ -4,6 +4,7 @@ import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppingapp.domain.entity.User
+import com.example.shoppingapp.util.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,7 +60,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun saveUserInfo(userId: String, user: User){
-        db.collection(DB_USER_COLLECTION)
+        db.collection(Constants.DB_USER)
             .document(userId)
             .set(user)
             .addOnSuccessListener {
@@ -102,7 +103,4 @@ class SignUpViewModel @Inject constructor(
                 nameV is SignUpValidateState.Success && surnameV is SignUpValidateState.Success
     }
 
-    companion object {
-        private const val DB_USER_COLLECTION: String = "users"
-    }
 }
