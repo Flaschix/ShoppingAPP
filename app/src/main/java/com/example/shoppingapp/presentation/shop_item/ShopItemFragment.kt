@@ -11,17 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentShopItemBinding
-import com.example.shoppingapp.presentation.activity.AppActivity
 import com.example.shoppingapp.util.hideBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -69,11 +65,15 @@ class ShopItemFragment : Fragment(R.layout.fragment_shop_item) {
         }
 
         binding.apply {
-            tvProductName.text = product.title
+            tvTitle.text = product.title
             tvProductDescription.text = product.description
-            tvProductPrice.text = "$ ${product.price.priceWithDiscount}"
-            tvOldProductPrice.text = "$ ${product.price.price}"
+            tvProductPrice.text = getString(R.string.price, product.price.priceWithDiscount)
+            tvOldProductPrice.text = getString(R.string.old_price, product.price.price)
             tvOldProductPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            tvProductDiscount.text = getString(R.string.discount, product.price.discount.toString())
+            tvAvailable.text = getString(R.string.available_to_order, product.available.toString())
+            tvIngredients.text = product.ingredients
+            tvSubtitle.text = product.subtitle
             if(product.info.isEmpty()) binding.tvProductInfo.visibility = View.INVISIBLE
         }
 

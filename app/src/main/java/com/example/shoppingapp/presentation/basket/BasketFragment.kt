@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentBasketBinding
+import com.example.shoppingapp.util.showBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +41,7 @@ class BasketFragment: Fragment(R.layout.fragment_basket) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        showBottomNavigationView()
         _binding = FragmentBasketBinding.inflate(layoutInflater,container,false)
         return binding.root
     }
