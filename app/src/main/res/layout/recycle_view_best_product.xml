@@ -1,89 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    app:elevation="0dp"
-    >
+    android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:layout_margin="10dp"
+        android:id="@+id/img_product"
+        android:layout_width="150dp"
+        android:layout_height="144dp"
+        android:src="@drawable/heart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitCenter"/>
 
-        <ImageView
-            android:id="@+id/img_product"
-            android:layout_width="114dp"
-            android:layout_height="108dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitCenter"/>
+    <ImageView
+        android:id="@+id/img_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/heart"
+        app:layout_constraintEnd_toEndOf="@id/img_product"
+        app:layout_constraintTop_toTopOf="@id/img_product" />
 
-        <LinearLayout
-            android:id="@+id/linear_product_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@id/img_product"
-            app:layout_constraintTop_toBottomOf="@id/img_product"
-            app:layout_constraintEnd_toEndOf="@id/img_product">
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins_light"
+        android:text="Chair"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/img_product"
+        app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_light"
-                android:text="Chair"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:id="@+id/img_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="16dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/baseline_favorite_24"
-                android:background="@color/light_pink"
-                app:tint="@color/white" />
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/tv_new_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/sf_pro_display"
-            android:text="$1600"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_price"
-            app:layout_constraintTop_toBottomOf="@id/linear_product_name"
-            android:layout_marginStart="10dp"/>
-
-        <TextView
-            android:id="@+id/tv_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/sf_pro_display"
-            android:text="$1600"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/img_product"
-            app:layout_constraintTop_toBottomOf="@id/linear_product_name" />
+    <TextView
+        android:id="@+id/tv_old_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/sf_pro_display"
+        android:text="@string/old_price"
+        android:textColor="@color/light_grey"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/img_product"
+        app:layout_constraintTop_toBottomOf="@id/img_product" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/rounded_corner"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="2dp"
+        android:text="@string/discount"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_price"
+        app:layout_constraintStart_toEndOf="@id/tv_price"
+        app:layout_constraintTop_toTopOf="@+id/tv_price" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/sf_pro_display"
+        android:text="@string/price"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/img_product"
+        app:layout_constraintTop_toBottomOf="@id/tv_old_price" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_weight="1"
+        android:text="Пенка для умывания`A`PIEU` `DEEP CLEAN` 200 мл"
+        android:textColor="@color/light_grey"
+        android:textSize="14sp"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="@+id/img_product"
+        app:layout_constraintStart_toStartOf="@+id/img_product"
+        app:layout_constraintBottom_toTopOf="@+id/imgRating"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <ImageView
+        android:id="@+id/imgRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/star"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@id/imgAddProduct"
+        app:layout_constraintStart_toStartOf="@id/tv_description"
+        app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+    <TextView
+        android:id="@+id/tvRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="@string/rating_number"
+        android:textSize="12sp"
+        android:textColor="@color/orange"
+        app:layout_constraintBottom_toBottomOf="@+id/imgRating"
+        app:layout_constraintStart_toEndOf="@id/imgRating"
+        app:layout_constraintTop_toTopOf="@id/imgRating" />
+
+    <TextView
+        android:id="@+id/tvFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="@string/freedback_count"
+        android:textSize="12sp"
+        android:textColor="@color/light_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/tvRating"
+        app:layout_constraintStart_toEndOf="@id/tvRating"
+        app:layout_constraintTop_toTopOf="@id/tvRating" />
+
+    <ImageView
+        android:id="@+id/imgAddProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

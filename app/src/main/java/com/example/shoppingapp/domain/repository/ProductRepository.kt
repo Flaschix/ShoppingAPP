@@ -1,6 +1,7 @@
 package com.example.onlinemarket.domain.repository
 
 import com.example.shoppingapp.domain.entity.Product.Product
+import com.example.shoppingapp.domain.entity.ResultNet
 import kotlinx.coroutines.flow.StateFlow
 
 interface ProductRepository {
@@ -10,6 +11,4 @@ interface ProductRepository {
     fun getListProduct(): StateFlow<List<Product>>
 
     fun getListProductByCategory(category: String): StateFlow<List<Product>>
-
-    fun addProductToBasket(product: Product): StateFlow<Boolean>
 }

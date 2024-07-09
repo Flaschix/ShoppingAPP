@@ -48,8 +48,6 @@ class SignInFragment : Fragment() {
             btnSignIn.setOnClickListener {
                 val email: String = edSignInEmail.text.toString().trim()
                 val password: String = edSignInPassword.text.toString()
-//                Toast.makeText(activity, "$email $password", Toast.LENGTH_SHORT).show()
-
                 viewModel.signIn(email, password)
             }
         }
@@ -65,7 +63,7 @@ class SignInFragment : Fragment() {
                         }
 
                         is SignInState.Error -> {
-                            Toast.makeText(activity, "${it.error}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${it.error}", Toast.LENGTH_SHORT).show()
                             binding.btnSignIn.visibility = View.VISIBLE
                             binding.prbSignIn.visibility = View.GONE
                         }

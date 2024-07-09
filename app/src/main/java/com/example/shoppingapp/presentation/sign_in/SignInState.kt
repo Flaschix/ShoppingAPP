@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 
 sealed class SignInState {
 
-    data class Success(val user: FirebaseUser): SignInState()
+    object Success: SignInState()
 
     data class Error(val error: String?): SignInState()
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentShopItemBinding
 import com.example.shoppingapp.util.hideBottomNavigationView
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -64,6 +65,8 @@ class ShopItemFragment : Fragment(R.layout.fragment_shop_item) {
             findNavController().navigateUp()
         }
 
+
+
         binding.apply {
             tvTitle.text = product.title
             tvProductDescription.text = product.description
@@ -108,6 +111,7 @@ class ShopItemFragment : Fragment(R.layout.fragment_shop_item) {
     private fun setUpVP(){
         binding.apply {
             viewPagerProductImages.adapter = vpAdapter
+            TabLayoutMediator(intoTabLayout, viewPagerProductImages) { tab, pos -> }.attach()
         }
     }
 

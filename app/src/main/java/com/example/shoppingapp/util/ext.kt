@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import com.example.shoppingapp.R
 import com.example.shoppingapp.presentation.activity.AppActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.merge
 
 fun Fragment.hideBottomNavigationView(){
     val bottomNavView = (activity as AppActivity).findViewById<BottomNavigationView>(
@@ -20,4 +22,8 @@ fun Fragment.showBottomNavigationView(){
     )
 
     bottomNavView.visibility = View.VISIBLE
+}
+
+fun <T> Flow<T>.mergeWith(otherFlow: Flow<T>): Flow<T> {
+    return merge(this, otherFlow)
 }

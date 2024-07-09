@@ -21,7 +21,7 @@ class BasketAdapter: ListAdapter<Product, BasketAdapter.BasketViewHolder>(
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imageCartProduct)
                 tvProductCartName.text = product.title
-                tvProductCartPrice.text = "$ ${product.price.priceWithDiscount}"
+                tvProductCartPrice.text = "${product.price.priceWithDiscount} ₽"
             }
         }
     }

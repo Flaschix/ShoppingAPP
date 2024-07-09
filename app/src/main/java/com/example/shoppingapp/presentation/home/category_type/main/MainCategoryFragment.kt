@@ -112,7 +112,7 @@ class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
 
     private fun setUpBPRV(){
         binding.rvBestProducts.apply {
-            layoutManager = GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             adapter = bestProductAdapter
         }
     }

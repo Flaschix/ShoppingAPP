@@ -3,7 +3,9 @@ package com.example.shoppingapp.presentation.sign_up
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shoppingapp.domain.entity.ResultNet
 import com.example.shoppingapp.domain.entity.User
+import com.example.shoppingapp.domain.usecase.SignUpUseCase
 import com.example.shoppingapp.util.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,14 +14,14 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val db: FirebaseFirestore
+    private val signUpUseCase: SignUpUseCase
 ):ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
@@ -31,18 +33,15 @@ class SignUpViewModel @Inject constructor(
     fun signUpUser(user: User){
         if (validateFields(user)){
             viewModelScope.launch {
-                _signUpState.emit(SignUpState.Loading)
-            }
-
-            auth.createUserWithEmailAndPassword(user.mail, user.password)
-                .addOnSuccessListener {
-                    it.user?.let {
-                        saveUserInfo(it.uid, user)
+                signUpUseCase(user).collect{
+                    when(it){
+                        is ResultNet.Error -> _signUpState.value = SignUpState.Error(it.message)
+                        ResultNet.Initial -> {}
+                        ResultNet.Loading -> _signUpState.emit(SignUpState.Loading)
+                        is ResultNet.Success<*> -> _signUpState.value = SignUpState.Success
                     }
                 }
-                .addOnFailureListener{
-                    _signUpState.value = SignUpState.Error(it.message)
-                }
+            }
         } else{
             val fieldsState = SignUpFieldsState(
                 validateName(user.name),
@@ -57,18 +56,6 @@ class SignUpViewModel @Inject constructor(
         }
 
 
-    }
-
-    private fun saveUserInfo(userId: String, user: User){
-        db.collection(Constants.DB_USER)
-            .document(userId)
-            .set(user)
-            .addOnSuccessListener {
-                _signUpState.value = SignUpState.Success(user)
-            }
-            .addOnFailureListener{
-                _signUpState.value = SignUpState.Error(it.message)
-            }
     }
 
     private fun validateName(name: String): SignUpValidateState{

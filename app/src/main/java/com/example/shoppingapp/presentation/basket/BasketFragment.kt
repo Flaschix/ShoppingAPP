@@ -56,15 +56,15 @@ class BasketFragment: Fragment(R.layout.fragment_basket) {
                 viewModel.basketState.collect{
                     when(it){
                         is BasketState.Error -> {
-                            binding.progressbarCart.visibility = View.INVISIBLE
+                            binding.prbBasket.visibility = View.INVISIBLE
                             Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
                         }
                         BasketState.Initial -> {}
                         BasketState.Loading -> {
-                            binding.progressbarCart.visibility = View.VISIBLE
+                            binding.prbBasket.visibility = View.VISIBLE
                         }
                         is BasketState.Success -> {
-                            binding.progressbarCart.visibility = View.INVISIBLE
+                            binding.prbBasket.visibility = View.INVISIBLE
                             if (it.data.isEmpty()){
                                 hideBuyElements()
                             } else {
@@ -81,7 +81,7 @@ class BasketFragment: Fragment(R.layout.fragment_basket) {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.productsPrice.collectLatest {
                     it?.let {
-                        binding.tvTotalPrice.text = "$ $it"
+                        binding.tvTotalPrice.text = getString(R.string.amount_price, it.toString())
                     }
                 }
             }
@@ -91,7 +91,7 @@ class BasketFragment: Fragment(R.layout.fragment_basket) {
     private fun hideBuyElements(){
         binding.apply {
             layoutCartEmpty.visibility = View.VISIBLE
-            rvCart.visibility = View.INVISIBLE
+            rvBasket.visibility = View.INVISIBLE
             totalBoxContainer.visibility = View.INVISIBLE
             buttonCheckout.visibility = View.INVISIBLE
         }
@@ -100,14 +100,14 @@ class BasketFragment: Fragment(R.layout.fragment_basket) {
     private fun showBuyElements(){
         binding.apply {
             layoutCartEmpty.visibility = View.INVISIBLE
-            rvCart.visibility = View.VISIBLE
+            rvBasket.visibility = View.VISIBLE
             totalBoxContainer.visibility = View.VISIBLE
             buttonCheckout.visibility = View.VISIBLE
         }
     }
 
     private fun setUpRV(){
-        binding.rvCart.apply {
+        binding.rvBasket.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = basketAdapter
         }

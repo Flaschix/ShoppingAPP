@@ -1,6 +1,7 @@
 package com.example.shoppingapp.presentation.home.category_type.adapter
 
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -19,11 +20,16 @@ class BestProductAdapter: ListAdapter<Product, BestProductAdapter.BestProductVie
     inner class BestProductViewHolder(private val binding: RecycleViewBestProductBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(product: Product) {
             binding.apply {
+                Log.d("RESPONSE", "$product: \n")
                 Glide.with(itemView).load(product.images[0]).into(imgProduct)
-                tvNewPrice.text = "$ ${product.price.priceWithDiscount}"
-                tvPrice.text = "$ ${product.price.price}"
-                tvPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                tvDiscount.text = "-${product.price.discount}%"
+                tvPrice.text = "${product.price.priceWithDiscount} ₽"
+                tvOldPrice.text = "${product.price.price} ₽"
+                tvOldPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 tvName.text = product.title
+                tvDescription.text = product.description
+                tvRating.text = product.feedback.rating.toString()
+                tvFeedback.text = "(${product.feedback.count})"
             }
         }
     }

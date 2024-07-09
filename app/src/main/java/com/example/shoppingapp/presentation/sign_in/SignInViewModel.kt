@@ -3,6 +3,9 @@ package com.example.shoppingapp.presentation.sign_in
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.shoppingapp.domain.entity.ResultNet
+import com.example.shoppingapp.domain.usecase.ResetPasswordUseCase
+import com.example.shoppingapp.domain.usecase.SignInUseCase
 import com.example.shoppingapp.presentation.sign_in.dialog.ResetPasswordState
 import com.example.shoppingapp.presentation.sign_up.SignUpValidateState
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val firebaseAuth: FirebaseAuth
+    private val signInUseCase: SignInUseCase,
+    private val resetPasswordUseCase: ResetPasswordUseCase
 ): ViewModel() {
 
     private val _signInState = MutableStateFlow<SignInState>(SignInState.Initial)
@@ -35,23 +39,17 @@ class SignInViewModel @Inject constructor(
         val passwordV = validatePassword(password)
 
         if (validateFields(emailV, passwordV)){
-            viewModelScope.launch {
-                _signInState.emit(SignInState.Loading)
-            }
 
-            firebaseAuth.signInWithEmailAndPassword(email,password)
-                .addOnSuccessListener {
-                    viewModelScope.launch {
-                        it.user?.let {
-                            _signInState.emit(SignInState.Success(it))
-                        }
+            viewModelScope.launch {
+                signInUseCase(email, password).collect{
+                    when(it){
+                        is ResultNet.Success<*> -> _signInState.emit(SignInState.Success)
+                        is ResultNet.Error -> _signInState.emit(SignInState.Error(it.message))
+                        ResultNet.Loading -> _signInState.emit(SignInState.Loading)
+                        ResultNet.Initial -> {}
                     }
                 }
-                .addOnFailureListener{
-                    viewModelScope.launch {
-                        _signInState.emit(SignInState.Error(it.message.toString()))
-                    }
-                }
+            }
         }else{
             val signInValidateState = SignInFieldsState(
                 emailV,
@@ -66,21 +64,30 @@ class SignInViewModel @Inject constructor(
     }
 
     fun resetPassword(email: String){
-        viewModelScope.launch {
-            _resetPassword.emit(ResetPasswordState.Loading)
+        if (email.isEmpty()) {
+            viewModelScope.launch {
+                _resetPassword.emit(ResetPasswordState.Error("Email is empty"))
+            }
+            return
         }
-        firebaseAuth
-            .sendPasswordResetEmail(email)
-            .addOnSuccessListener {
-                viewModelScope.launch{
-                    _resetPassword.emit(ResetPasswordState.Success(email))
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            viewModelScope.launch {
+                _resetPassword.emit(ResetPasswordState.Error("Wrong email format"))
+            }
+            return
+        }
+
+
+        viewModelScope.launch {
+            resetPasswordUseCase(email).collect{
+                when(it){
+                    is ResultNet.Error -> _resetPassword.emit(ResetPasswordState.Error(it.message))
+                    ResultNet.Initial -> {}
+                    ResultNet.Loading -> _resetPassword.emit(ResetPasswordState.Loading)
+                    is ResultNet.Success<*> -> _resetPassword.emit(ResetPasswordState.Success(email))
                 }
             }
-            .addOnFailureListener {
-                viewModelScope.launch {
-                    _resetPassword.emit(ResetPasswordState.Error(it.message))
-                }
-            }
+        }
 
     }
 

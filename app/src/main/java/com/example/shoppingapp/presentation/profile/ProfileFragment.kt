@@ -42,7 +42,7 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.user.collect{
+                viewModel.userState.collect{
                     when(it){
                         is UserState.Error -> {
                             Toast.makeText(requireContext(), it.msg, Toast.LENGTH_SHORT).show()
@@ -65,14 +65,14 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
 
     private fun successStateView() {
         binding.apply {
-            constraintParent.visibility = View.VISIBLE
+//            profileContainer.visibility = View.VISIBLE
             progressbarSettings.visibility = View.GONE
         }
     }
 
     private fun loadingStateView() {
         binding.apply {
-            constraintParent.visibility = View.GONE
+//            profileContainer.visibility = View.GONE
             progressbarSettings.visibility = View.VISIBLE
         }
     }
@@ -80,7 +80,7 @@ class ProfileFragment: Fragment(R.layout.fragment_profile) {
     private fun setUpView(data: User){
         binding.apply {
             tvUserName.text = data.name
-            tvEditPersonalDetails.text = data.mail
+            tvUserEmail.text = data.mail
 
             btnLogOut.setOnClickListener {
                 viewModel.logOut()
