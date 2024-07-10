@@ -1,4 +1,4 @@
-- [1. ~ Architecture](#2--architecture-)
+- [1. ~ Architecture](#1--architecture-)
 - [2. ~ Domain Layer](#2--domain-layer-)
   - [2.1. Entity:](#21-entity)
   - [2.2. Repository:](#22-repository)
@@ -20,7 +20,7 @@
 
 Цель этого проекта — потренироваться в разработке мобильного приложения онлайн покупок по типу ozon и wildberries. Я стремлюсь создать интуитивно понятный интерфейс и обеспечить высокую производительность приложения, используя современные технологии и лучшие практики разработки.
 
-## 1. ~ Architecure:
+## 1. ~ Architecure :
 
   Проект разработан с использованием принципов Clean Architecture и MVVM (Model-View-ViewModel). Это позволяет разделить логику приложения на независимые слои, что упрощает тестирование и поддержку кода.
 
@@ -185,7 +185,7 @@ interface UserRepository {
 }
 ```
 
-## 3. ~ Data Layer:
+## 3. ~ Data Layer :
 
 Далее был разработан слой работы с данными и сетью. В нём мы будем получать данные из сети, отправлять разные действия с сетью и базо данных, а так же обрабатывать их.
 
@@ -409,3 +409,400 @@ fun signUpUser(user: User){
       }
   }
 ```
+
+Вот кст вам скриншоты экрана:
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/2babf791-d0c3-4720-bded-71dba6d2f29b) ![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/7b355823-8d9b-4169-8f92-d85df59c4938)
+
+
+### 4.2. SignIn Screen:
+
+Экран авторизации мы будем делать по темже принципам, так что я просто покажу вам конечный результат как это выглядит (совсем забыл, так же я добавил возможность сброса пароля для пользователя):
+
+```kotlin
+  viewModelScope.launch {
+      resetPasswordUseCase(email).collect{
+          when(it){
+              is ResultNet.Error -> _resetPassword.emit(ResetPasswordState.Error(it.message))
+              ResultNet.Initial -> {}
+              ResultNet.Loading -> _resetPassword.emit(ResetPasswordState.Loading)
+              is ResultNet.Success<*> -> _resetPassword.emit(ResetPasswordState.Success(email))
+          }
+      }
+  }
+```
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/b097478b-612c-40f1-b0f8-16a84edeeac0) ![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/7ee4d42c-68a3-412b-88a7-162139765397)
+
+
+### 4.3. Main Screen:
+
+На главной странице у нас была настроенна панель категорий и перемещения по фрагментам при помощи неё
+
+```kotlin
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val categoriesFragment = arrayListOf<Fragment>(
+            MainCategoryFragment(),
+            MaskFragment(),
+            SuntanFragment(),
+            FaceFragment(),
+            BodyFragment(),
+            InRoadFragment()
+        )
+
+        binding.viewpagerHome.isUserInputEnabled = false
+
+        val viewPagerAdapter = HomeAdapter(categoriesFragment, childFragmentManager, lifecycle)
+
+        binding.viewpagerHome.adapter = viewPagerAdapter
+
+        TabLayoutMediator(binding.tabLayout, binding.viewpagerHome) { tab, pos ->
+            when(pos){
+                0 -> tab.text = "Главная"
+                1 -> tab.text = "Тело"
+                2 -> tab.text = "Загар"
+                3 -> tab.text = "Лицо"
+                4 -> tab.text = "Маски"
+                5 -> tab.text = "В дорогу"
+            }
+        }.attach()
+
+    }
+```
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/76a5b2f5-3975-4405-88d5-dddd0052d740)
+
+Для экрана **Главная** был создан отдельный дизайн и настроен свой собственный адаптер вот основная часть кода
+
+
+```kotlin
+class MainCategoryFragment: Fragment(R.layout.fragment_main_category) {
+
+    private var _binding: FragmentMainCategoryBinding? = null
+
+    private val binding: FragmentMainCategoryBinding
+        get() = _binding ?: throw Exception("FragmentMainCategoryBinding === null")
+
+    private val specialProductAdapter: SpecialProductAdapter by lazy {
+        SpecialProductAdapter()
+    }
+
+    private val bestCaseAdapter: BestCaseAdapter by lazy {
+        BestCaseAdapter()
+    }
+
+    private val bestProductAdapter: BestProductAdapter by lazy {
+        BestProductAdapter()
+    }
+
+    private val viewModel by viewModels<MainCategoryViewModel>()
+
+    override fun onCreateView(
+        ...
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setUpSPRV()
+        setUpBCRV()
+        setUpBPRV()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.screenState.collect{
+                    when(it){
+                        is RVState.Error -> {}
+                        RVState.Initial -> {}
+                        RVState.Loading -> {
+                            showProgress()
+                        }
+                        is RVState.Success -> {
+                            specialProductAdapter.submitList(it.data)
+                            bestCaseAdapter.submitList(it.data)
+                            bestProductAdapter.submitList(it.data)
+                            hideProgress()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private fun setUpSPRV(){
+        binding.rvSpecialProducts.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = specialProductAdapter
+        }
+
+        specialProductAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
+
+        bestCaseAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
+
+        bestProductAdapter.onProductClickListener = {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToShopItemFragment(it))
+        }
+    }
+
+    private fun setUpBCRV(){
+        binding.rvBestDealsProducts.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = bestCaseAdapter
+        }
+    }
+
+    private fun setUpBPRV(){
+        binding.rvBestProducts.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+            adapter = bestProductAdapter
+        }
+    }
+
+    private fun showProgress() {
+        binding.mainCategoryProgressbar.visibility = View.VISIBLE
+        binding.bestProductsProgressbar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgress() {
+        binding.mainCategoryProgressbar.visibility = View.GONE
+        binding.bestProductsProgressbar.visibility = View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showBottomNavigationView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
+```
+
+Также был создан специальный **sealed** класс разных категорий экранов, чтобы было удобнее орентироваться и точно не ошибиться в написании
+
+```kotlin
+sealed class Category(val category: String) {
+
+    object Mask: Category("mask")
+    object Face: Category("face")
+    object Suntan: Category("suntan")
+    object Body: Category("body")
+    object InRoad: Category("inroad")
+}
+```
+
+
+Для остальных категорий был создан один шаблон который просто заполнялся пришедшими в него данными:
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/65824a90-682a-48ae-96c6-55830cd3c861)
+
+Их viewmodel выглядит довольно компактно:
+
+```kotlin
+class BaseCategoryViewModel(
+    private val getListProductByCategoryUseCase: GetListProductByCategoryUseCase,
+    private val category: Category
+): ViewModel(){
+    private val productList = getListProductByCategoryUseCase(category.category)
+
+
+
+    val screenState = productList
+        .filter { it.isNotEmpty() }
+        .map { RVState.Success(it) as RVState }
+        .onStart { emit(RVState.Loading) }
+}
+```
+
+### 4.4. Basket Screen:
+
+Далее перейдём к экрану отвечающему за корзину. Она имеет два основных вида: пустая и с чем-то. На данном экране можно увидеть все товары что были добавлены пользователем в корзину, их общую стоймость, а также имеется функция удаления товара из корзины.
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/e5d5c47f-3f65-4192-af67-45cbdf7bf37f) ![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/4a6fd557-5298-419a-a858-76601537fdfd)
+
+
+Также как и всегда во viewmodel мы просто запрашиваем данные и передаём их нашему view. **View** в свою очередь просто подписывается на их рассылку и настраивает списки.
+
+```kotlin
+@HiltViewModel
+class BasketViewModel @Inject constructor(
+    private val getBasketUseCase: GetBasketUseCase,
+    private val deleteProductFromBasketUseCase: DeleteProductFromBasketUseCase
+): ViewModel() {
+
+    private val basket = getBasketUseCase()
+
+    val basketState = basket
+        .catch {  }
+        .map { BasketState.Success(it) as BasketState }
+        .onStart { BasketState.Loading }
+
+    val productsPrice = basketState.map {
+        when(it){
+            is BasketState.Success -> sumProductPrice(it.data)
+            else -> null
+        }
+    }
+
+    private fun sumProductPrice(products: List<Product>): Int {
+        return products.sumOf { it.price.priceWithDiscount.toInt() }
+    }
+
+    fun deleteProductFromBasket(product: Product) {
+
+        viewModelScope.launch {
+            deleteProductFromBasketUseCase(product).collect{
+
+            }
+        }
+
+    }
+}
+```
+
+Кстати про настраивание списков. Покажу вам на примере корзины как я это делаю.
+
+Наш класс наследуется от ListAdapter и принимает в себя тип данных которые он будет принимать, viewholder который будет создавать и как параметр принимает класс кастомный DiffUtil который ьудет говорить ему изменились ли данные. Так же в него добавлены слушатели для внешней настройки нажатия на кнопки и элементы.
+
+```kotlin
+class BasketAdapter: ListAdapter<Product, BasketAdapter.BasketViewHolder>(
+    ProductDiffCallback()
+){
+    var deleteClickListener: ((Product) -> Unit)? = null
+
+    var onProductClickListener: ((Product) -> Unit)? = null
+
+    inner class BasketViewHolder(val binding: BasketProductItemBinding): ViewHolder(binding.root){
+        fun bind(product: Product){
+            binding.apply {
+                Glide.with(itemView).load(product.images[0]).into(imageCartProduct)
+                tvProductCartName.text = product.title
+                tvProductCartPrice.text = "${product.price.priceWithDiscount} ₽"
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasketViewHolder {
+        return BasketViewHolder(
+            BasketProductItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: BasketViewHolder, position: Int) {
+        val product = getItem(position)
+
+        holder.bind(product)
+
+        holder.binding.imageMinus.setOnClickListener{
+            deleteClickListener?.invoke(product)
+        }
+
+        holder.itemView.setOnClickListener {
+            onProductClickListener?.invoke(product)
+        }
+    }
+}
+```
+
+Вот как выглядит класс наш класс **ProductDiffCallback**
+
+```kotlin
+class ProductDiffCallback : DiffUtil.ItemCallback<Product>(){
+    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        return oldItem == newItem
+    }
+}
+```
+
+### 4.5. Product Screen:
+
+Далее расмотрим экран с полной информацией о продукте. В него можно попасть по нажатию на продукт из мест где их видно, такие как напиремер гланый экран, корзина и тд. 
+
+На данном экране мы можем увидеть всю информацию о товаре, опместить его в корзину, расмотреть все его изображения и тд. Подробно показывать код не буду, тк все всё там идёт по тому же принципу что и до этого было.
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/5545f682-33dc-40de-a889-d071a5f98b0d) ![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/f6b754ee-95ec-4f64-926b-618211472eb3)
+
+### 4.6. Profile Screen:
+
+Последним экраном на данный момент является экран профиля пользователя. Тут все дефолтно. Можно посмотреть данные о пользователи и выйти из аккаунта. В дальнейшем будет доработка.
+
+![image](https://github.com/Flaschix/ShoppingAPP/assets/89143685/32de848e-e512-49fb-9da6-3bfffd4413db)
+
+
+
+## 5. ~ DI :
+
+### 5.1. AppModule:
+
+Совсем немного затрону внедрение зависимостей **DI**. До этого я работал только с библиотекой Dagger 2 и в ней столько всего есть что настроить и разобраться порой довольно долго. Так что в этом проекте решил пропробовать что-то новое и менее большое, тк для моего проекта думал что хватит.
+
+Здесь я буду использовать Hilt - более лёгкую версию Dagger 2.
+
+Для начала нужно создать точку входа нашего приложения
+
+```kotlin
+@HiltAndroidApp
+class AndroidAppH: Application() {
+}
+```
+
+Далее мы можем использовать все наши любимые анотации Inject во всех местах где машина сама сможет сгенерировать нам данные.
+
+В более сложных случаях мы должны сами объяснить откуда что взять или как что создать нашему другу. Для этого я создал **AppModule** и добавил в него все нужные мне реализации. Также добавил к ним анатации singleton чтобы они не создовались каждый раз заново.
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore() = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun provideApiService(): ApiService {
+        return ApiFactory.apiService
+    }
+}
+```
+
+### 5.2. RepositoryModule:
+
+Для реализации интерфейсов был создал дополнительный модуль.
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+interface RepositoryModule {
+
+    @Binds
+    @Singleton
+    fun provideMainRepositoryImpl(repository: ProductRepositoryImpl): ProductRepository
+
+    @Binds
+    @Singleton
+    fun provideUserRepositoryImpl(repository: UserRepositoryImpl): UserRepository
+}
+```
+
+
+**Проект пока не доделан. В дальнейшем буду продолжать его развивать и дополнять функционалом.**
+
