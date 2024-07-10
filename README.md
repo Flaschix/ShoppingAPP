@@ -20,7 +20,7 @@
 
 Цель этого проекта — потренироваться в разработке мобильного приложения онлайн покупок по типу ozon и wildberries. Я стремлюсь создать интуитивно понятный интерфейс и обеспечить высокую производительность приложения, используя современные технологии и лучшие практики разработки.
 
-## 1. ~ Architecure
+## 1. ~ Architecure:
 
   Проект разработан с использованием принципов Clean Architecture и MVVM (Model-View-ViewModel). Это позволяет разделить логику приложения на независимые слои, что упрощает тестирование и поддержку кода.
 
@@ -185,7 +185,7 @@ interface UserRepository {
 }
 ```
 
-## 3. ~ Data Layer
+## 3. ~ Data Layer:
 
 Далее был разработан слой работы с данными и сетью. В нём мы будем получать данные из сети, отправлять разные действия с сетью и базо данных, а так же обрабатывать их.
 
@@ -318,16 +318,94 @@ class ProductRepositoryImpl @Inject constructor(
 }
 ```
 
-## 4. ~ Presentation Layer
+## 4. ~ Presentation Layer:
 
 Мы написали бизнес слоя приложения, то что оно может делать и кто в нём живёт. Так же мы написали слой откуда и куда мы будем отправлять/получать наши данные, так же где будем их хранить и меня в течении использования нашего приложения.
 Осталось только написать теперь слой который будет видеть пользователь и взаимодействовать со всем этим добром.
 
-### 4.1. SignIn Screen:
+### 4.1. SignUp Screen:
 
-- Space complexity: O(n)
-- Digunakan ketika:
-  - Untuk mencari, menambahkan, dan menghapus data dengan efisien.
-  - Contoh penggunaan: struktur data tree dengan kunci terurut.
+Начнём с экрана регистрации (ведь нам нужны для начала пользователи, хоть какие-то...)
 
-Note: kompleksitas waktu dan ruang dapat berbeda tergantung pada implementasi algoritma dan struktur data tertentu, serta input yang diberikan. Dalam pemrograman, pemilihan algoritma dan struktur data yang tepat sangat penting untuk mencapai performa yang optimal sesuai dengan kasus penggunaan.
+Этот экран будет давайть возможность зарегестрироваться, а также проверять валидность введёных данных. А для отслеживания успеха всего этого дела и взаимодействия с данными мы создадим **SignUpViewModel**, чтобы наша **view** не заморачивалась. Также это улучшит читабельность кода и сохранность наших данных.
+
+В нашей модельке есть основные состояния, одно отвечает за успешность регистрации, а другое за валидность введёных данных.
+
+```kotlin
+    private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Initial)
+    val signUpState: Flow<SignUpState> = _signUpState.asStateFlow()
+
+    private val _validation = Channel<SignUpFieldsState>()
+    val validateState = _validation.receiveAsFlow()
+```
+
+Для каждого поля идёт проверка коректности данных. Вот пример с полем **имени**.
+
+```kotlin
+    private fun validateName(name: String): SignUpValidateState{
+        if(name.isEmpty()) return SignUpValidateState.Error("Fill this field")
+
+        return SignUpValidateState.Success
+    }
+```
+
+А вот основная функция которая и определит правильно ли пользователь ввёл свои данные
+
+```kotlin
+    private fun validateFields(user: User): Boolean{
+        val nameV = validateName(user.name)
+        val surnameV = validateName(user.surname)
+        val emailV = validateEmail(user.mail)
+        val passwordV = validatePassword(user.password)
+
+        return emailV is SignUpValidateState.Success && passwordV is SignUpValidateState.Success &&
+                nameV is SignUpValidateState.Success && surnameV is SignUpValidateState.Success
+    }
+```
+
+А уже в функции регистрации если уж пользователь всё правильно ввёл, то мы говорим об этом нашей **view**
+
+```kotlin
+fun signUpUser(user: User){
+        if (validateFields(user)){
+            viewModelScope.launch {
+                signUpUseCase(user).collect{
+                    when(it){
+                        is ResultNet.Error -> _signUpState.value = SignUpState.Error(it.message)
+                        ResultNet.Initial -> {}
+                        ResultNet.Loading -> _signUpState.emit(SignUpState.Loading)
+                        is ResultNet.Success<*> -> _signUpState.value = SignUpState.Success
+                    }
+                }
+            }
+        }
+    ..............
+}
+```
+
+
+На самой же view мы просто подписываем на наши состояния. Вообще все view будут содержать минимум логики для поддержания clean принципа, так что в них мы просто настраиваем основные элементы и подписываемя на всё что нужно.
+
+```kotlin
+  viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED){
+          viewModel.signUpState.collect{
+              when(it){
+                  is SignUpState.Initial -> binding.prbSignUp.visibility = View.GONE
+                  is SignUpState.Loading -> {
+                      binding.btnSignUp.visibility = View.GONE
+                      binding.prbSignUp.visibility = View.VISIBLE
+                  }
+                  is SignUpState.Success -> {
+                      launchSignInFragment()
+                  }
+                  is SignUpState.Error -> {
+                      Log.d("TEST", "onViewCreated: ${it.error}")
+                      binding.btnSignUp.visibility = View.VISIBLE
+                      binding.prbSignUp.visibility = View.GONE
+                  }
+              }
+          }
+      }
+  }
+```
