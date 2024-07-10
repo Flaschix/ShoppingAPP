@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_shopItemFragment"
-            app:destination="@id/shopItemFragment" />
+            app:destination="@id/shopItemFragment"
+            app:enterAnim="@anim/from_left"
+            app:popEnterAnim="@anim/from_right" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,6 +46,8 @@
         tools:layout="@layout/fragment_basket">
         <action
             android:id="@+id/action_basketFragment_to_shopItemFragment"
-            app:destination="@id/shopItemFragment" />
+            app:destination="@id/shopItemFragment"
+            app:enterAnim="@anim/from_left"
+            app:popEnterAnim="@anim/from_right" />
     </fragment>
 </navigation>

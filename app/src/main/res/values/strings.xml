@@ -38,4 +38,9 @@
     <string name="delivery_order">Оформить заказ</string>
     <string name="freedback_count">(%1$s)</string>
     <string name="rating_number">%1$s</string>
+    <string name="beast_deal">Лучшие предложения</string>
+    <string name="all_goods">Все товары</string>
+    <string name="for_you">Для вас</string>
+    <string name="rate">Оценить</string>
+    <string name="in_basket">В корзину</string>
 </resources>

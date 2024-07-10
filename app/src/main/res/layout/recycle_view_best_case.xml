@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/tv_deal_product_name"
-            android:layout_width="80dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:text="Scotch Premium"
             app:layout_constraintStart_toEndOf="@id/img_best_deal"
@@ -32,13 +32,13 @@
             android:fontFamily="@font/poppins_light"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="9sp"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tv_old_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$2000"
+            android:text="2000 Р"
             app:layout_constraintTop_toBottomOf="@id/tv_deal_product_name"
             app:layout_constraintStart_toEndOf="@id/tv_new_price"
             android:textColor="@color/light_grey"
@@ -51,12 +51,12 @@
             android:id="@+id/tv_new_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$1600"
+            android:text="1600 Р"
             app:layout_constraintStart_toStartOf="@id/tv_deal_product_name"
             app:layout_constraintTop_toBottomOf="@id/tv_deal_product_name"
 
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:fontFamily="@font/sf_pro_display"/>
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
@@ -65,9 +65,9 @@
             android:layout_height="28dp"
             android:background="@color/light_pink"
             android:fontFamily="@font/poppins_light"
-            android:text="See product"
+            android:text="@string/rate"
             android:textColor="@color/white"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/tv_deal_product_name"
             app:layout_constraintTop_toTopOf="@id/tv_deal_product_name"

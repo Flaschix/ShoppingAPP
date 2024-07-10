@@ -55,16 +55,6 @@ class UserRepositoryImpl @Inject constructor(
         } catch (e: Exception){
             emit(ResultNet.Error(e.message.toString()))
         }
-
-//            .addOnSuccessListener {
-//                it.user?.let {
-//                    saveUserInfo(it.uid, user)
-//                }
-//            }
-//            .addOnFailureListener{
-//                _signUpState.value = SignUpState.Error(it.message)
-//            }
-
     }.stateIn(
         scope = coroutineScope,
         started = SharingStarted.Lazily,
@@ -202,6 +192,18 @@ class UserRepositoryImpl @Inject constructor(
         scope = coroutineScope,
         started = SharingStarted.Lazily,
         initialValue = ResultNet.Initial
+    )
+
+    override fun checkAuthState(): StateFlow<Boolean> = flow {
+        val user = auth.currentUser
+
+        if (user != null){
+            emit(true)
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = false
     )
 
 

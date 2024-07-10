@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.shoppingapp.R
 import com.example.shoppingapp.databinding.FragmentHomeBinding
-import com.example.shoppingapp.presentation.home.category_type.base.BaseCategoryFragment
-import com.example.shoppingapp.presentation.home.category_type.base.BedFragment
-import com.example.shoppingapp.presentation.home.category_type.base.ChairFragment
-import com.example.shoppingapp.presentation.home.category_type.base.CupboardFragment
-import com.example.shoppingapp.presentation.home.category_type.base.IlluminationFragment
-import com.example.shoppingapp.presentation.home.category_type.base.TableFragment
+import com.example.shoppingapp.presentation.home.category_type.base.BodyFragment
+import com.example.shoppingapp.presentation.home.category_type.base.FaceFragment
+import com.example.shoppingapp.presentation.home.category_type.base.MaskFragment
+import com.example.shoppingapp.presentation.home.category_type.base.InRoadFragment
+import com.example.shoppingapp.presentation.home.category_type.base.SuntanFragment
 import com.example.shoppingapp.presentation.home.category_type.main.MainCategoryFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -36,11 +35,11 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
 
         val categoriesFragment = arrayListOf<Fragment>(
             MainCategoryFragment(),
-            CupboardFragment(),
-            TableFragment(),
-            ChairFragment(),
-            BedFragment(),
-            IlluminationFragment()
+            MaskFragment(),
+            SuntanFragment(),
+            FaceFragment(),
+            BodyFragment(),
+            InRoadFragment()
         )
 
         binding.viewpagerHome.isUserInputEnabled = false
@@ -51,12 +50,12 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
 
         TabLayoutMediator(binding.tabLayout, binding.viewpagerHome) { tab, pos ->
             when(pos){
-                0 -> tab.text = "Main"
-                1 -> tab.text = "Cupboard"
-                2 -> tab.text = "Table"
-                3 -> tab.text = "Chair"
-                4 -> tab.text = "Bed"
-                5 -> tab.text = "Illumination"
+                0 -> tab.text = "Главная"
+                1 -> tab.text = "Тело"
+                2 -> tab.text = "Загар"
+                3 -> tab.text = "Лицо"
+                4 -> tab.text = "Маски"
+                5 -> tab.text = "В дорогу"
             }
         }.attach()
 

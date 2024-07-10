@@ -50,7 +50,7 @@ class ProductMapper @Inject constructor() {
         val result = mutableListOf<Product>()
 
         for (item in response.items){
-            if (item.category == category)
+            if (item.tags.contains(category))
             result.add(
                 Product(
                     id = item.id,

@@ -32,7 +32,7 @@
         android:layout_marginTop="1dp"
         android:layout_weight="1"
         android:fontFamily="@font/poppins_light"
-        android:text="Chair"
+        android:text="Mask"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"

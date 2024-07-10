@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BedFragment: BaseCategoryFragment() {
+class InRoadFragment: BaseCategoryFragment() {
     @Inject
     lateinit var getListProductByCategoryUseCase: GetListProductByCategoryUseCase
 
     private val viewModel by viewModels<BaseCategoryViewModel>{
-        BaseCategoryViewModelFactory(getListProductByCategoryUseCase, Category.Bed)
+        BaseCategoryViewModelFactory(getListProductByCategoryUseCase, Category.InRoad)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -24,4 +24,6 @@ interface UserRepository {
     fun addProductToBasket(product: Product): StateFlow<ResultNet>
 
     fun deleteProductFromBasket(product: Product): StateFlow<ResultNet>
+
+    fun checkAuthState(): StateFlow<Boolean>
 }
